@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Mapa de Ubicaciones GPS</string>
+    <string name="title_save_location">Guardar ubicación</string>
+    <string name="title_write_name">Escribe el nombre de la ubicación:</string>
+    <string name="title_latitud">Latitud:</string>
+    <string name="title_longitude">Longitud:</string>
+    <string name="title_btnSave">Guardar</string>
+    <string name="title_btnCancel">Cancelar</string>
+</resources>

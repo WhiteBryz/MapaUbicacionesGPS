@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_text_location_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la ubicación" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="8dp">
+
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Guardar"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Cancelar" />
+
+        </LinearLayout>
+
+</LinearLayout>
