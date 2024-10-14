@@ -208,11 +208,14 @@ class MainActivity : AppCompatActivity() {
         // Actualiza la lista de ubicaciones
         loadLocations()
 
+        // Valor de tolerancia de comparación
+        val tolerance = 0.00001
+
         // Elimina la ubicación del mapa
         val markerToDelete = mapView.overlays.find { overlay ->
             overlay is Marker &&
-                    overlay.position.latitude == location.aLatitude &&
-                    overlay.position.longitude == location.aLongitude
+                    Math.abs(overlay.position.latitude - location.aLatitude) < tolerance &&
+                    Math.abs(overlay.position.longitude - location.aLongitude) < tolerance
         }
 
         if (markerToDelete != null) {
