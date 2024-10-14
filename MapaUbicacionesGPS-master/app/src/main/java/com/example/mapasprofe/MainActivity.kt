@@ -82,21 +82,18 @@ class MainActivity : AppCompatActivity() {
         mapView.controller.setZoom(17.0)
         mapView.setMultiTouchControls(true) // Habilita los controles (para hacer zoom con dos dedos)
 
-        // Ubicación de la Facultad de Telemática
-        database.execSQL("INSERT INTO locations (locationName, aLatitude, aLongitude) VALUES ('Facultad de Telemática', 19.24914, -103.69740)")
-        val startPoint = GeoPoint(19.24914, -103.69740)
-        mapView.controller.setCenter(startPoint) // Mueve la cámara a la ubicación establecida
+        // Añade la facultad de telemática como ubicación inicial si no hay ninguna aún
+        val cursor = database.rawQuery("SELECT * FROM locations", null)
+        if (cursor.count == 0) {
+            database.execSQL("INSERT INTO locations (locationName, aLatitude, aLongitude) VALUES ('Facultad de Telemática', 19.24914, -103.69740)")
 
-        // Añade un marcador
-        val marker = Marker(mapView)
-        marker.position = startPoint
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-        marker.title = "Facultad de Telemática"
-        marker.setOnMarkerClickListener { m, mapView ->
-            m.showInfoWindow() // Muestra el título del marcador
-            true
         }
-        mapView.overlays.add(marker) // Añade el marcador en el mapa
+        //Coloca la primera ubicación como inicio
+        cursor.moveToFirst()
+        val latitude = cursor.getDouble(2)
+        val longitude = cursor.getDouble(3)
+        val startPoint = GeoPoint(latitude, longitude)
+        mapView.controller.setCenter(startPoint)
 
         val mapEventsReceiver = object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
@@ -249,9 +246,10 @@ class MainActivity : AppCompatActivity() {
         if (markerToDelete != null) {
             mapView.overlays.remove(markerToDelete)
             mapView.invalidate() // Redibuja el mapa para mostrar los cambios
-        }
 
-        Toast.makeText(this, "Ubicación eliminada", Toast.LENGTH_SHORT).show()
+
+            Toast.makeText(this, "Ubicación eliminada", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
