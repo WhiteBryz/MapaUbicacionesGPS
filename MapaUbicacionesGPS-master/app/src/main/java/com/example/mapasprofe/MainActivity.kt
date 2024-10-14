@@ -19,6 +19,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import android.widget.Toast
+import org.osmdroid.views.overlay.Polygon
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mapView: MapView
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var locationAdapter: LocationAdapter
     private var tempMarker: Marker? = null // Marcador temporal
+    private var selectedLocationCircle: Polygon? = null
 
     // Clase para extraer los datos de la BD
     data class Location(
@@ -81,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         mapView.setMultiTouchControls(true) // Habilita los controles (para hacer zoom con dos dedos)
 
         // Ubicación de la Facultad de Telemática
+        database.execSQL("INSERT INTO locations (locationName, aLatitude, aLongitude) VALUES ('Facultad de Telemática', 19.24914, -103.69740)")
         val startPoint = GeoPoint(19.24914, -103.69740)
         mapView.controller.setCenter(startPoint) // Mueve la cámara a la ubicación establecida
 
@@ -119,11 +122,28 @@ class MainActivity : AppCompatActivity() {
         mapView.overlays.add(overlayEvents)
     }
 
+    // Función: Crear círculo
+    private fun showCircleAroundLocation(geoPoint: GeoPoint) {
+        if (selectedLocationCircle != null) {
+            mapView.overlays.remove(selectedLocationCircle)
+        }
+
+        selectedLocationCircle = Polygon().apply {
+            points = Polygon.pointsAsCircle(geoPoint, 50.0)
+            fillColor = 0x12121212
+            strokeColor = 0xFF0000FF.toInt()
+            strokeWidth = 2f
+        }
+
+        mapView.overlays.add(selectedLocationCircle)
+        mapView.invalidate()
+    }
     // Función: Centrar dentro del mapa un punto
     fun centerMapOnLocation(location: Location, zoomLevel: Double = 18.0) {
         val geoPointEl = GeoPoint(location.aLatitude, location.aLongitude)
         mapView.controller.animateTo(geoPointEl)
         mapView.controller.setZoom(zoomLevel)
+        showCircleAroundLocation(geoPointEl)
     }
 
     // Función: Muestra el marcador temporal en el mapa
