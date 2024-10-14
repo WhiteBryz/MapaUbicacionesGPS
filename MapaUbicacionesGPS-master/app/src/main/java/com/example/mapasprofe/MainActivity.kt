@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         locationAdapter = LocationAdapter(mutableListOf(),
             { location ->
+                centerMapOnLocation(location)
             },
             { location ->
                 editLocation(location)
@@ -116,6 +117,13 @@ class MainActivity : AppCompatActivity() {
 
         val overlayEvents = MapEventsOverlay(mapEventsReceiver)
         mapView.overlays.add(overlayEvents)
+    }
+
+    // Función: Centrar dentro del mapa un punto
+    fun centerMapOnLocation(location: Location, zoomLevel: Double = 18.0) {
+        val geoPointEl = GeoPoint(location.aLatitude, location.aLongitude)
+        mapView.controller.animateTo(geoPointEl)
+        mapView.controller.setZoom(zoomLevel)
     }
 
     // Función: Muestra el marcador temporal en el mapa
