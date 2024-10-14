@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
             points = Polygon.pointsAsCircle(geoPoint, 50.0)
             fillColor = 0x12121212
             strokeColor = 0xFF0000FF.toInt()
-            strokeWidth = 2f
+            strokeWidth = 2.5f
         }
 
         mapView.overlays.add(selectedLocationCircle)
